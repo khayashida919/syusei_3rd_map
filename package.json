@@ -1,12 +1,12 @@
 {
-  "name": "painting_process_front",
+  "name": "syusei_3rd_map",
   "version": "0.9.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "export": "next build && next export -o painting_process_front",
+    "export": "next build && next export -o syusei_3rd_map",
     "lint": "lint-staged --config .lintstagedrc.js",
     "lint:fix": "eslint src/**/*.{ts,tsx} --fix",
     "format": "prettier --write .",
