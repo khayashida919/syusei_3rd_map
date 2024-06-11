@@ -15,7 +15,7 @@ export const ContentLayout: FC<ContentLayoutProps> = ({
   return (
     <VStack align="start" minH="full" spacing={0} w="full" {...props}>
       {header}
-      <Box minH="full" minW="full" px="1rem">
+      <Box minH="full" minW="full">
         {children}
       </Box>
       {footer && footer}
