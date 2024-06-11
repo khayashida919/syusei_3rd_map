@@ -36,7 +36,6 @@
     "react-query": "^3.39.1"
   },
   "devDependencies": {
-    "@tanstack/react-query-devtools": "^5.20.5",
     "@types/google-map-react": "^2.1.10",
     "@types/node": "20.8.10",
     "@types/react": "18.2.34",
