@@ -39,9 +39,9 @@ export const MapsContent: FC = () => {
 
       {selectedStore && (
         <Box
-          bottom="300"
+          bottom="2"
           key={JSON.stringify(selectedStore)} //https://github.com/facebook/react/issues/26713
-          position="absolute"
+          position="fixed"
           w="full"
           zIndex={'docked'}
         >
