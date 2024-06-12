@@ -1,125 +1,87 @@
-import { IconButton } from '@chakra-ui/react';
-import GoogleMapReact from 'google-map-react';
+import { Box, HStack, Link, Spacer, VStack } from '@chakra-ui/react';
 import { FC, useState } from 'react';
-import { IoIosPin } from 'react-icons/io';
 
-import { ContentLayout } from '@/components/ui';
-
-export type Store = {
-  address: string;
-  googleLink: string;
-  lat: number;
-  lng: number;
-  memo: string;
-  name: string;
-};
-
-type MarkerProps = Store & {
-  isSelected: boolean;
-};
-
-//`GoogleMapReact`の仕様上`lat`と`lng`は必須Props
-const Marker: FC<MarkerProps> = ({ isSelected, name }) => {
-  return (
-    <IconButton
-      aria-label={name}
-      colorScheme=""
-      icon={
-        <IoIosPin
-          color={`${isSelected ? 'red' : 'gray'}`}
-          size={isSelected ? 64 : 48}
-        />
-      }
-      position="absolute"
-      transform="translate(-50%, -50%)"
-    />
-  );
-};
+import {
+  EmptyLabel,
+  FullLabel,
+  LowLabel,
+} from '@/components/model/store-state-label';
+import { useMapsContent } from '@/components/page/maps/hooks/useMapsContent';
+import { BaseText, ContentLayout } from '@/components/ui';
+import { Store } from '@/entity/store';
+import { GoogleMap, Marker } from '@/libs';
 
 export const MapsContent: FC = () => {
-  // const {} = useMapsContent();
+  const { stores } = useMapsContent();
 
   const [selectedStore, setSelectedStore] = useState<Store>();
 
-  const stores: Store[] = [
-    {
-      address: '〒650-0001 兵庫県神戸市中央区加納町４丁目６−５',
-      googleLink: 'https://maps.app.goo.gl/yNZEMzZhQw17LpUr5',
-      lat: 34.695404800408795,
-      lng: 135.1928602742905,
-      memo: '',
-      name: 'シュガーママのお店QUEEN',
-    },
-    {
-      address:
-        '〒650-0004 兵庫県神戸市中央区中山手通１丁目８−２０ 三宮ＳＫビル B1F',
-      googleLink: 'https://maps.app.goo.gl/rjgSzbhHdpwXBi3R7',
-      lat: 34.6950680111787,
-      lng: 135.19264059999978,
-      memo: '',
-      name: 'ダイニングバー Zorome',
-    },
-  ];
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleApiLoaded = ({ map, maps }: { map: any; maps: any }) => {
-    // https://developers.google.com/maps/documentation/javascript/reference/map?hl=ja#MapOptions
-    map.setOptions({
-      clickableIcons: false,
-      fullscreenControl: false,
-      gestureHandling: 'greedy',
-      zoomControlOptions: {
-        position: maps.ControlPosition.RIGHT_TOP,
-      },
-    });
-  };
-
   return (
     <ContentLayout>
-      <GoogleMapReact
-        yesIWantToUseGoogleMapApiInternals
-        bootstrapURLKeys={{ key: process.env.NEXT_PUBLIC_MAP_API_KEY! }}
-        defaultCenter={{
-          lat: 34.694370367298454,
-          lng: 135.19279968548972,
-        }}
-        defaultZoom={17}
-        onChildClick={(hoverKey: string, childProps: Store) => {
-          setSelectedStore(childProps);
+      <GoogleMap
+        onChildClick={(store) => {
+          // setSelectedStore(undefined);
+          setSelectedStore(store);
         }}
         onClick={() => {
           setSelectedStore(undefined);
         }}
-        onGoogleApiLoaded={handleApiLoaded}
       >
         {stores.map((store) => (
           <Marker
-            address={store.address}
-            googleLink={store.googleLink}
-            isSelected={
-              selectedStore == null ? false : selectedStore?.name == store.name
-            }
+            isSelected={selectedStore?.name === store.name ?? false}
             key={store.name}
-            lat={store.lat}
-            lng={store.lng}
-            memo={store.memo}
-            name={store.name}
+            {...store}
           />
         ))}
-      </GoogleMapReact>
+      </GoogleMap>
+
+      {selectedStore && (
+        <Box
+          bottom="2"
+          key={JSON.stringify(selectedStore)} //https://github.com/facebook/react/issues/26713
+          position="absolute"
+          w="full"
+          zIndex={'docked'}
+        >
+          <VStack
+            alignItems="start"
+            bgColor="white"
+            borderColor="red.200"
+            borderWidth={2}
+            justifyContent="space-between"
+            mx="0.5rem"
+            p="1rem"
+            px="2rem"
+            rounded="lg"
+            shadow="2xl"
+            spacing={0}
+          >
+            <BaseText fontSize="x-large" fontWeight="bold">
+              {selectedStore.name}
+            </BaseText>
+            <BaseText fontSize="md" textColor="gray">
+              {selectedStore.address}
+            </BaseText>
+
+            <Spacer minH={6} />
+
+            <HStack justifyContent="space-between" w="full">
+              <Link
+                color="red"
+                fontSize="sm"
+                fontWeight="bold"
+                href={selectedStore.googleLink}
+              >
+                Google マップで見る
+              </Link>
+              {selectedStore.state === 'full' && <FullLabel />}
+              {selectedStore.state === 'low' && <LowLabel />}
+              {selectedStore.state === 'empty' && <EmptyLabel />}
+            </HStack>
+          </VStack>
+        </Box>
+      )}
     </ContentLayout>
   );
 };
-
-// const handleApiLoaded = ({ map, maps }: { map: any; maps: any }) => {
-//   const bounds = new maps.LatLngBounds();
-
-//   targets.forEach((target) => {
-//     const marker = new maps.Marker({
-//       map,
-//       position: { lat: target.lat, lng: target.lng },
-//     });
-//     bounds.extend(marker.position);
-//   });
-//   map.fitBounds(bounds);
-// };

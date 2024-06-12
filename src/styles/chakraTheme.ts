@@ -1,41 +1,6 @@
 import { extendTheme } from '@chakra-ui/react';
 
-const chakraComponentStyle = {
-  Table: {
-    variants: {
-      striped: {
-        tbody: {
-          tr: {
-            _even: {
-              td: {
-                border: '1px solid #E2E8F0',
-              },
-            },
-            _odd: {
-              td: {
-                border: '1px solid #E2E8F0',
-              },
-            },
-          },
-        },
-        tfoot: {
-          tr: {
-            td: {
-              border: '1px solid #E2E8F0',
-            },
-          },
-        },
-        thead: {
-          tr: {
-            th: {
-              border: '1px solid #E2E8F0',
-            },
-          },
-        },
-      },
-    },
-  },
-};
+const chakraComponentStyle = {};
 
 export const CHAKRA_THEME = extendTheme({
   colors: {
@@ -56,8 +21,14 @@ export const CHAKRA_THEME = extendTheme({
   components: { ...chakraComponentStyle },
   styles: {
     global: {
+      //SafariだとMap選択時に青枠が付くので無効化
+      '.gm-style iframe + div': {
+        border: 'none !important',
+      },
+      //スクロールを禁止
       body: {
         bgColor: 'bg_gray_1',
+        overflow: 'hidden',
       },
     },
   },
