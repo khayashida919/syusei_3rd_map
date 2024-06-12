@@ -1,7 +1,9 @@
-import { Store } from '@/entity/store';
+import { useState } from 'react';
+
+import { Store, StoreState } from '@/entity/store';
 
 export const useMapsContent = () => {
-  const stores: Store[] = [
+  const mock: Store[] = [
     {
       address: '〒650-0001 兵庫県神戸市中央区加納町４丁目６−５',
       googleLink: 'https://maps.app.goo.gl/yNZEMzZhQw17LpUr5',
@@ -289,5 +291,18 @@ export const useMapsContent = () => {
     },
   ];
 
-  return { stores };
+  const [selectedStore, setSelectedStore] = useState<Store>();
+  const [stores, setStores] = useState(mock);
+
+  const onChangeStoreState = (state: StoreState) => {
+    if (!selectedStore) return;
+
+    const editStore = { ...selectedStore };
+    const filtered = stores.filter((e) => e.name !== editStore.name);
+    editStore.state = state;
+    setSelectedStore(editStore);
+    setStores([...filtered, editStore]);
+  };
+
+  return { onChangeStoreState, selectedStore, setSelectedStore, stores };
 };

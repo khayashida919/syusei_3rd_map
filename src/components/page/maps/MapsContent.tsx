@@ -1,20 +1,18 @@
 import { Box, HStack, Link, Spacer, VStack } from '@chakra-ui/react';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 import {
-  EmptyLabel,
-  FullLabel,
-  LowLabel,
-} from '@/components/model/store-state-label';
+  EmptyButton,
+  FullButton,
+  LowButton,
+} from '@/components/model/store-state-button';
 import { useMapsContent } from '@/components/page/maps/hooks/useMapsContent';
 import { BaseImage, BaseText, ContentLayout } from '@/components/ui';
-import { Store } from '@/entity/store';
 import { GoogleMap, Marker } from '@/libs';
 
 export const MapsContent: FC = () => {
-  const { stores } = useMapsContent();
-
-  const [selectedStore, setSelectedStore] = useState<Store>();
+  const { onChangeStoreState, selectedStore, setSelectedStore, stores } =
+    useMapsContent();
 
   return (
     <ContentLayout>
@@ -41,7 +39,7 @@ export const MapsContent: FC = () => {
 
       {selectedStore && (
         <Box
-          bottom="2"
+          bottom="300"
           key={JSON.stringify(selectedStore)} //https://github.com/facebook/react/issues/26713
           position="absolute"
           w="full"
@@ -55,32 +53,35 @@ export const MapsContent: FC = () => {
             justifyContent="space-between"
             mx="0.5rem"
             p="1rem"
-            px="2rem"
             rounded="lg"
             shadow="2xl"
             spacing={0}
           >
-            <BaseText fontSize="x-large" fontWeight="bold">
-              {selectedStore.name}
-            </BaseText>
-            <BaseText fontSize="md" textColor="gray">
+            <Link color="red.500" href={selectedStore.googleLink}>
+              <BaseText fontSize="x-large" fontWeight="bold">
+                {selectedStore.name}
+              </BaseText>
+            </Link>
+
+            <BaseText fontSize="sm" textColor="gray">
               {selectedStore.address}
             </BaseText>
 
             <Spacer minH={6} />
 
             <HStack justifyContent="space-between" w="full">
-              <Link
-                color="red"
-                fontSize="sm"
-                fontWeight="bold"
-                href={selectedStore.googleLink}
-              >
-                Google マップで見る
-              </Link>
-              {selectedStore.state === 'full' && <FullLabel />}
-              {selectedStore.state === 'low' && <LowLabel />}
-              {selectedStore.state === 'empty' && <EmptyLabel />}
+              <FullButton
+                isSelected={selectedStore.state === 'full'}
+                onClick={() => onChangeStoreState('full')}
+              />
+              <LowButton
+                isSelected={selectedStore.state === 'low'}
+                onClick={() => onChangeStoreState('low')}
+              />
+              <EmptyButton
+                isSelected={selectedStore.state === 'empty'}
+                onClick={() => onChangeStoreState('empty')}
+              />
             </HStack>
           </VStack>
         </Box>

@@ -5,5 +5,7 @@ export type Store = {
   lng: number;
   memo: string;
   name: string;
-  state: 'full' | 'empty' | 'low';
+  state: StoreState;
 };
+
+export type StoreState = 'full' | 'empty' | 'low';
