@@ -7,7 +7,7 @@ import {
   LowLabel,
 } from '@/components/model/store-state-label';
 import { useMapsContent } from '@/components/page/maps/hooks/useMapsContent';
-import { BaseText, ContentLayout } from '@/components/ui';
+import { BaseImage, BaseText, ContentLayout } from '@/components/ui';
 import { Store } from '@/entity/store';
 import { GoogleMap, Marker } from '@/libs';
 
@@ -18,9 +18,12 @@ export const MapsContent: FC = () => {
 
   return (
     <ContentLayout>
+      <HStack position="absolute" spacing={0} top="1" zIndex={'docked'}>
+        <BaseImage src="/logo.png" width={24} />
+      </HStack>
+
       <GoogleMap
         onChildClick={(store) => {
-          // setSelectedStore(undefined);
           setSelectedStore(store);
         }}
         onClick={() => {
