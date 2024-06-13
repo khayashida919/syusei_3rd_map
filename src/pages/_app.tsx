@@ -1,4 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react';
+import { Analytics } from '@vercel/analytics/react';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
@@ -39,6 +40,7 @@ const MyApp: NextPage<AppProps> = ({
       <Head>
         <title>三部会ダッシュボード</title>
       </Head>
+      <Analytics />
       <DynamicImporter>
         <CookiesProvider>
           <QueryClientProvider client={queryClient}>
