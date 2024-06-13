@@ -1,6 +1,7 @@
 export type Store = {
   address: string;
   googleLink: string;
+  id: number;
   lat: number;
   lng: number;
   memo: string;

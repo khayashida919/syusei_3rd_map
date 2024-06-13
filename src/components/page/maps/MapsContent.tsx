@@ -11,22 +11,23 @@ import { BaseImage, BaseText, ContentLayout } from '@/components/ui';
 import { GoogleMap, Marker } from '@/libs';
 
 export const MapsContent: FC = () => {
-  const { onChangeStoreState, selectedStore, setSelectedStore, stores } =
-    useMapsContent();
+  const {
+    onChangeStoreState,
+    onClickLogo,
+    onSelectStore,
+    selectedStore,
+    stores,
+  } = useMapsContent();
 
   return (
     <ContentLayout>
       <HStack position="absolute" spacing={0} top="1" zIndex={'docked'}>
-        <BaseImage src="/logo.png" width={24} />
+        <BaseImage src="/logo.png" width={24} onClick={() => onClickLogo()} />
       </HStack>
 
       <GoogleMap
-        onChildClick={(store) => {
-          setSelectedStore(store);
-        }}
-        onClick={() => {
-          setSelectedStore(undefined);
-        }}
+        onChildClick={(store) => onSelectStore(store)}
+        onClick={() => onSelectStore(undefined)}
       >
         {stores.map((store) => (
           <Marker

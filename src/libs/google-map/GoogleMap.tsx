@@ -2,11 +2,12 @@ import GoogleMapReact from 'google-map-react';
 import { FC, ReactNode } from 'react';
 
 import { Store } from '@/entity/store';
+import { MarkerProps } from '@/libs';
 
 export type GoogleMapProps = {
   children?: ReactNode;
   onChildClick: (store: Store) => void;
-  onClick: VoidFunction;
+  onClick?: VoidFunction;
 };
 
 export const GoogleMap: FC<GoogleMapProps> = ({
@@ -37,12 +38,12 @@ export const GoogleMap: FC<GoogleMapProps> = ({
       }}
       defaultZoom={17}
       style={{ borderWidth: 0 }}
-      onChildClick={(hoverKey: string, childProps: Store) => {
-        onChildClick(childProps);
+      onChildClick={(hoverKey: string, childProps: MarkerProps) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { isSelected, ...store } = childProps;
+        onChildClick(store);
       }}
-      onClick={() => {
-        onClick();
-      }}
+      onClick={() => onClick && onClick()}
       onGoogleApiLoaded={handleApiLoaded}
     >
       {children}
