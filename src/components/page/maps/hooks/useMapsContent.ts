@@ -4,7 +4,7 @@ import { Store, StoreState } from '@/entity/store';
 import { useSupabase } from '@/network/supabase';
 
 export const useMapsContent = () => {
-  const { fetchStores, subscribeStores } = useSupabase();
+  const { fetchStores, subscribeStores, updateStore } = useSupabase();
 
   const [selectedStore, setSelectedStore] = useState<Store>();
   const [stores, setStores] = useState<Store[]>([]);
@@ -38,13 +38,8 @@ export const useMapsContent = () => {
   };
 
   const onChangeStoreState = (state: StoreState) => {
-    console.log(state);
-    // if (!selectedStore) return;
-    // const editStore = { ...selectedStore };
-    // const filtered = stores.filter((e) => e.name !== editStore.name);
-    // editStore.state = state;
-    // setSelectedStore(editStore);
-    // setStores([...filtered, editStore]);
+    if (!selectedStore) return;
+    updateStore(selectedStore.id, state);
   };
 
   return {

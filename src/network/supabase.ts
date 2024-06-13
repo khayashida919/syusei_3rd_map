@@ -1,6 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 import { Database } from 'database.types';
 
+import { StoreState } from '@/entity/store';
+
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -29,5 +31,9 @@ export const useSupabase = () => {
       .subscribe();
   };
 
-  return { fetchStores, subscribeStores };
+  const updateStore = async (id: number, state: StoreState) => {
+    await supabase.from('3rd-map').update({ state: state }).eq('id', id);
+  };
+
+  return { fetchStores, subscribeStores, updateStore };
 };
