@@ -10,7 +10,10 @@ const supabase = createClient<Database>(
 
 export const useSupabase = () => {
   const fetchStores = async () => {
-    const stores = await supabase.from('3rd-map').select('*');
+    const stores = await supabase
+      .from('3rd-map')
+      .select('*')
+      .eq('isOpen', 'true');
     return stores;
   };
 
