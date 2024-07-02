@@ -1,3 +1,4 @@
+import { useDisclosure } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
 import { Store, StoreState } from '@/entity/store';
@@ -8,6 +9,8 @@ export const useMapsContent = () => {
 
   const [selectedStore, setSelectedStore] = useState<Store>();
   const [stores, setStores] = useState<Store[]>([]);
+
+  const modal = useDisclosure();
 
   const fetch = async () => {
     const response = await fetchStores();
@@ -43,6 +46,7 @@ export const useMapsContent = () => {
   };
 
   return {
+    modal,
     onChangeStoreState,
     onClickLogo,
     onSelectStore,

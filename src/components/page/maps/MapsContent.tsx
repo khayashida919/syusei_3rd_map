@@ -1,4 +1,13 @@
-import { Box, HStack, Link, Spacer, VStack } from '@chakra-ui/react';
+import { HamburgerIcon } from '@chakra-ui/icons';
+import {
+  Box,
+  HStack,
+  IconButton,
+  Link,
+  Slide,
+  Spacer,
+  VStack,
+} from '@chakra-ui/react';
 import { FC } from 'react';
 
 import {
@@ -7,11 +16,17 @@ import {
   LowButton,
 } from '@/components/model/store-state-button';
 import { useMapsContent } from '@/components/page/maps/hooks/useMapsContent';
-import { BaseImage, BaseText, ContentLayout } from '@/components/ui';
+import {
+  BaseButton,
+  BaseImage,
+  BaseText,
+  ContentLayout,
+} from '@/components/ui';
 import { GoogleMap, Marker } from '@/libs';
 
 export const MapsContent: FC = () => {
   const {
+    modal,
     onChangeStoreState,
     onClickLogo,
     onSelectStore,
@@ -87,6 +102,37 @@ export const MapsContent: FC = () => {
           </VStack>
         </Box>
       )}
+
+      <IconButton
+        aria-label={''}
+        bottom="4"
+        colorScheme="primary"
+        h={16}
+        icon={<HamburgerIcon boxSize={6} />}
+        isRound={true}
+        position="absolute"
+        right="4"
+        w={16}
+        zIndex={'docked'}
+        onClick={modal.onToggle}
+      />
+
+      <Slide direction="bottom" in={modal.isOpen}>
+        <Box bgColor="white" minH="full">
+          <Box bgColor="primary.500" minW="full" px={8} py={4} roundedTop={16}>
+            <BaseText fontSize="lg" fontWeight="bold" textColor="white">
+              協力店一覧
+            </BaseText>
+          </Box>
+
+          <VStack p={8}>
+            <BaseButton onClick={modal.onToggle} />
+            <BaseButton onClick={modal.onToggle} />
+            <BaseButton onClick={modal.onToggle} />
+            <BaseButton onClick={modal.onToggle} />
+          </VStack>
+        </Box>
+      </Slide>
     </ContentLayout>
   );
 };
